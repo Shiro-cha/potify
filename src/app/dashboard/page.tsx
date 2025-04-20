@@ -30,10 +30,10 @@ export default function Dashboard() {
 
   if (status === "loading") {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-pulse">
-          <div className="h-20 w-20 rounded-full bg-gray-700 mb-4"></div>
-          <div className="h-8 w-60 bg-gray-700 rounded"></div>
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 flex flex-col items-center justify-center p-4">
+        <div className="animate-pulse space-y-4">
+          <div className="h-24 w-24 rounded-full bg-gray-700/50"></div>
+          <div className="h-6 w-64 bg-gray-700/50 rounded-lg"></div>
         </div>
       </div>
     );
@@ -41,41 +41,47 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 flex flex-col items-center justify-center p-4">
-      <div className="bg-gray-800/70 p-8 rounded-xl shadow-2xl w-full max-w-2xl text-center">
-        <h1 className="text-4xl font-bold text-white mb-6">
-          Welcome to <span className="text-green-500">Potify</span> Dashboard
+      <div className="bg-gray-800/50 backdrop-blur-lg p-8 rounded-2xl shadow-2xl w-full max-w-2xl text-center border border-white/10">
+        <h1 className="text-4xl font-bold text-white mb-8">
+          Welcome to <span className="text-green-400">Potify</span>
         </h1>
         
         {user && (
-          <div className="flex flex-col items-center mt-6">
-            <img 
-              src={user.image || "/default-user.png"} 
-              alt="User profile"
-              className="w-24 h-24 rounded-full mb-4 border-2 border-green-500 animate-fade-in"
-            />
-            <h2 className="text-2xl font-semibold text-white">{user.name}</h2>
-            <p className="text-gray-300">{user.email}</p>
-            
-            <div className="flex gap-4 mt-6">
-            <button
-  onClick={handleSignOut}
-  className="flex items-center gap-2 py-2 px-4 rounded-sm shadow-sm bg-gray-600 hover:bg-gray-700 text-white transition-colors"
->
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H3" />
-  </svg>
-  Disconnect Session
-</button>
+          <div className="flex flex-col items-center space-y-6">
+            <div className="relative group">
+              <img 
+                src={user.image || "/default-user.png"} 
+                alt="User profile"
+                className="w-32 h-32 rounded-full border-4 border-green-400/50 hover:border-green-400 transition-all duration-300 cursor-pointer"
+              />
+              <div className="absolute inset-0 bg-green-400/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </div>
 
-<Link 
-  href={HOME} 
-  className="flex items-center gap-2 py-2 px-4 rounded-sm shadow-sm bg-gray-700 hover:bg-gray-600 text-white transition-colors"
->
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-  </svg>
-  Back to home
-</Link>
+            <div className="space-y-2">
+              <h2 className="text-2xl font-semibold text-white">{user.name}</h2>
+              <p className="text-gray-400 font-mono">{user.email}</p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm">
+              <button
+                onClick={handleSignOut}
+                className="flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-xl bg-red-500/20 hover:bg-red-500/30 border border-red-400/30 hover:border-red-400/50 backdrop-blur-sm transition-all duration-300 text-red-100 hover:text-white"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H3" />
+                </svg>
+                <span className="text-sm font-semibold">Disconnect</span>
+              </button>
+
+              <Link
+                href={HOME}
+                className="flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-xl bg-gray-700/20 hover:bg-gray-700/30 border border-gray-600/30 hover:border-gray-600/50 backdrop-blur-sm transition-all duration-300 text-gray-300 hover:text-white"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                </svg>
+                <span className="text-sm font-semibold">Home</span>
+              </Link>
             </div>
           </div>
         )}
