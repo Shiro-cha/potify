@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node https-server.js",
+    "dev": "next dev --turbopack",
+    "dev:https":"node https-server.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
