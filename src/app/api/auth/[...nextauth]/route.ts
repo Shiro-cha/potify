@@ -2,6 +2,15 @@
 import NextAuth from "next-auth";
 import SpotifyProvider from "next-auth/providers/spotify";
 
+const scopes = [
+  'user-read-email',
+  'user-read-private',
+  'user-top-read',
+  'playlist-read-private',
+  'user-read-currently-playing',
+  'user-read-playback-state',
+].join(' ');
+
 const handler = NextAuth({
   providers: [
     SpotifyProvider({
@@ -9,7 +18,7 @@ const handler = NextAuth({
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET!,
       authorization: {
         params: {
-          scope: 'user-read-email user-read-private',
+          scope: scopes,
           show_dialog: true
         },
       },
