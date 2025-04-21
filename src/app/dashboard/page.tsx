@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-import PageLoader from "@/components/dashboard/page-loader";
+import PageLoader from "@/components/shared/page-loader";
 import Navigation from "@/components/dashboard/navigation";
 import Signature from "@/components/dashboard/signature";
 import InputSearch from "@/components/dashboard/input-search";
@@ -14,10 +14,11 @@ import UserPlaylists from "@/components/dashboard/user-playlists";
 import UserTrack from "@/components/dashboard/user-track";
 import AppLogo from "@/components/dashboard/app-logo";
 import ContentTitle from "@/components/dashboard/content-title";
-
+import { MusicPlayer, Track } from "@/components/dashboard/music-player";
 
 import { LOGIN } from "@/constants/routes";
 import { User } from "@/types/User";
+import { mockTrack } from "@/mocks/track";
 
 
 
@@ -26,12 +27,17 @@ import { User } from "@/types/User";
 export default function Dashboard() {
   const [user, setUser] = useState<User | null>(null);
   const { data: session, status } = useSession();
+  const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
   const router = useRouter();
 
 
 useEffect(() => {
   if (status === "authenticated") {
     setUser(session.user as User);
+    // TODO: fetch current playback state from Spotify API
+    setCurrentTrack(mockTrack)
+    setIsPlaying(true)
     
   }
 }, [status, session]);
@@ -76,7 +82,30 @@ useEffect(() => {
           <UserPlaylists/>
           <UserTrack/>
         </div>
+        {/* Music player rendered over bottom */}
+    <MusicPlayer
+      track={currentTrack}
+      isPlaying={isPlaying}
+      onPlay={() => {
+        // call Spotify play API...
+        setIsPlaying(true);
+      }}
+      onPause={() => {
+        // call Spotify pause API...
+        setIsPlaying(false);
+      }}
+      onNext={() => {
+        // call Spotify skip to next...
+      }}
+      onPrevious={() => {
+        // call Spotify skip to previous...
+      }}
+      onSeek={(pos) => {
+        // call Spotify seek...
+      }}
+    />
       </div>
+      
     </div>
   );
 }
