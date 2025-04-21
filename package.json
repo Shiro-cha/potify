@@ -4,16 +4,20 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "dev:https":"node https-server.js",
+    "dev:https": "node https-server.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@spotify/web-api-ts-sdk": "^1.2.0",
+    "axios": "^1.8.4",
     "clsx": "^2.1.1",
     "next": "15.3.1",
+    "next-auth": "^4.24.11",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "spotify": "^0.3.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
