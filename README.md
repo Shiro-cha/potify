@@ -144,4 +144,4 @@ This project follows:
 
 ## 🧾 License
 
-MIT © [Your Name](https://github.com/your-username)
+MIT © [Shiro Yukami](https://github.com/Shiro-cha)
