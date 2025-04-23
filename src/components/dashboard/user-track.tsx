@@ -1,4 +1,4 @@
-import { Track } from "@/types/Track";
+import { Track } from "@/utils/types/Track";
 import { useEffect, useState } from "react";
 
 export default function UserTrack(){

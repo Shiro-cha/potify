@@ -1,4 +1,4 @@
-import { Playlist } from "@/types/Playlist";
+import { Playlist } from "@/utils/types/Playlist";
 import { useEffect, useState } from "react";
 
 export default function UserPlaylists(){

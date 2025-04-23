@@ -17,7 +17,7 @@ import ContentTitle from "@/components/dashboard/content-title";
 import { MusicPlayer, Track } from "@/components/dashboard/music-player";
 
 import { LOGIN } from "@/constants/routes";
-import { User } from "@/types/User";
+import { User } from "@/utils/types/User";
 import { mockTrack } from "@/mocks/track";
 
 

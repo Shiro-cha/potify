@@ -1,4 +1,4 @@
-import { User } from "@/types/User";
+import { User } from "@/utils/types/User";
 
 type Props = {
   user: User | null;
