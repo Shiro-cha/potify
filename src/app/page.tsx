@@ -1,8 +1,7 @@
 'use client'
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { DASHBOARD, HOME, LOGIN } from "@/constants/routes";
-import { NavButton } from "@/components/ui/nav-button";
+
 import PageLoader from "@/components/shared/page-loader";
 import WelcomeText from "@/components/home/welcom-text";
 

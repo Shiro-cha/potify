@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from "react";
-import { useSession, signOut } from "next-auth/react";
+import { useSession} from "next-auth/react";
+import { getToken } from "next-auth/jwt"
 import { useRouter } from "next/navigation";
 
 import PageLoader from "@/components/shared/page-loader";
@@ -27,6 +28,7 @@ import { mockTrack } from "@/mocks/track";
 export default function Dashboard() {
   const [user, setUser] = useState<User | null>(null);
   const { data: session, status } = useSession();
+  const {data} =useSession();
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const router = useRouter();
@@ -40,6 +42,7 @@ useEffect(() => {
     setIsPlaying(true)
     
   }
+  console.log("session",data)
 }, [status, session]);
 
   useEffect(() => {
@@ -100,7 +103,7 @@ useEffect(() => {
       onPrevious={() => {
         // call Spotify skip to previous...
       }}
-      onSeek={(pos) => {
+      onSeek={() => {
         // call Spotify seek...
       }}
     />

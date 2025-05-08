@@ -10,7 +10,7 @@ export default function LoginPage() {
     signIn("spotify", {
       callbackUrl: "/dashboard",
       redirect: false,
-    }).then((res) => {
+    }).then(() => {
     
     });
   };
