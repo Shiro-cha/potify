@@ -4,6 +4,9 @@ import { useSession} from "next-auth/react";
 import { getToken } from "next-auth/jwt"
 import { useRouter } from "next/navigation";
 
+import { getUserPlaylists, getUserProfile, getRecentlyPlayed, getLikedSongs, getFollowingArtists, getEstimatedMinutesListened } from "../../../services/api/spotifyapi.service"
+import { searchSpotify } from "../../../services/api/search.service";
+
 import PageLoader from "@/components/shared/page-loader";
 import Navigation from "@/components/dashboard/navigation";
 import Signature from "@/components/dashboard/signature";
@@ -28,26 +31,75 @@ import { mockTrack } from "@/mocks/track";
 export default function Dashboard() {
   const [user, setUser] = useState<User | null>(null);
   const { data: session, status } = useSession();
-  const {data} =useSession();
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [playlists, setPlaylists] = useState<any | null>(null);
+  const [recentlyPlayed, setRecentlyPlayed] = useState<any | null>(null);
+  const [likedSongs, setLikedSongs] = useState<any | null>(null);
+  const [followingArtists, setFollowingArtists] = useState<any | null>(null);
+  const [minutesListened, setMinutesListened] = useState<any | null>(null);
+
+  const [searchQuery, setSearchQuery] = useState("");
+
   const router = useRouter();
 
 
-useEffect(() => {
-  if (status === "authenticated") {
-    setUser(session.user as User);
-    // TODO: fetch current playback state from Spotify API
-    setCurrentTrack(mockTrack)
-    setIsPlaying(true)
-    
-  }
-  console.log("session",data)
-}, [status, session]);
+  useEffect(() => {
+    if (status === "authenticated" && session?.accessToken) {
+      const accessToken = session.accessToken;
+  
+      // Fetch data after authentication and getting the access token
+      const fetchData = async () => {
+        try {
+          const userProfile = await getUserProfile(accessToken);
+          console.log("User Profile:", userProfile); 
+          setUser(userProfile);
+  
+          const userPlaylists = await getUserPlaylists(accessToken);
+          console.log("User Playlists:", userPlaylists); // Log user playlists
+          setPlaylists(userPlaylists);
+  
+          // Fetch Recently Played Tracks
+          const userRecentlyPlayed = await getRecentlyPlayed(accessToken);
+          console.log("User Recently Played Tracks:", userRecentlyPlayed); // Log recently played tracks
+          setRecentlyPlayed(userRecentlyPlayed);
+  
+          // Fetch Liked Songs
+          const userLikedSongs = await getLikedSongs(accessToken);
+          console.log("User Liked Songs:", userLikedSongs); // Log liked songs
+          setLikedSongs(userLikedSongs);
+  
+          // Fetch Following Artists
+          const userFollowingArtists = await getFollowingArtists(accessToken);
+          console.log("User Following Artists:", userFollowingArtists); // Log following artists
+          setFollowingArtists(userFollowingArtists);
+  
+          // Fetch Estimated Minutes Listened
+          const userMinutesListened = await getEstimatedMinutesListened(accessToken);
+          console.log("User Estimated Minutes Listened:", userMinutesListened); // Log estimated minutes listened
+          setMinutesListened(userMinutesListened);
+          
+          // TODO: Set current track and playing state (You can replace this with real Spotify data)
+          setCurrentTrack(mockTrack);
+          setIsPlaying(true);
+  
+        } catch (err) {
+          console.error("Error fetching Spotify data:", err);
+        }
+      };
+  
+      fetchData();
+    }
+  }, [status, session]);
+  
 
   useEffect(() => {
-    if (status === "unauthenticated") router.push(LOGIN);
-  }, [status, router]);
+    if (status !== "authenticated" || !session?.accessToken) return;
+    if (!searchQuery || searchQuery.trim().length < 2) return;
+  
+    const accessToken = session.accessToken;
+  
+  }, [searchQuery, session, status]);
 
   
 
@@ -79,11 +131,16 @@ useEffect(() => {
           </div>
         </div>
 
-        <UserStats />
+        <UserStats 
+          minutesListened={minutesListened} 
+          likedSongs={likedSongs} 
+          following={followingArtists} 
+        />
 
         <div className="space-y-8">
-          <UserPlaylists/>
-          <UserTrack/>
+        <UserPlaylists playlists={playlists} />
+
+          <UserTrack tracks={recentlyPlayed}/>
         </div>
         {/* Music player rendered over bottom */}
     <MusicPlayer

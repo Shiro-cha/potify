@@ -3,15 +3,18 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import SpotifyProvider from "next-auth/providers/spotify";
 
 const scope = [
-  'user-read-email',
-  'user-read-private',
-  'user-library-read',
-  'playlist-read-private',
-  'user-read-playback-state',
-  'user-modify-playback-state',
-  'streaming',
-  'user-read-currently-playing'
-].join(' ')
+  "user-read-private",
+  "user-read-email",
+  "user-library-read",
+  "playlist-read-private",
+  "user-follow-read",
+  "user-read-recently-played",
+  "user-read-playback-position",      // ← Ajoute ça
+  "user-top-read",                    // ← Et ça pour stats perso
+  "user-read-currently-playing",      // ← Optionnel mais utile
+  "user-read-playback-state",         // ← Optionnel mais utile
+].join(' ');
+
 
 export const authOptions: NextAuthOptions = {
   providers: [
