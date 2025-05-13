@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { SearchResult } from "@/utils/types/SearchResult";
-import { searchSpotify } from "../../../services/api/search.service";
+import { searchSpotify, searchSpotifyAndYouTube } from "../../../services/api/search.service";
 
 export default function InputSearch() {
   const { data: session, status } = useSession();
@@ -19,7 +19,7 @@ export default function InputSearch() {
     ) {
       try {
         setLoading(true);
-        const results = await searchSpotify(session.accessToken, query);
+        const results = await searchSpotifyAndYouTube(session.accessToken, query);
         setSuggestions(results);
       } catch (err) {
         console.error("Search error:", err);

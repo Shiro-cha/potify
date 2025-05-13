@@ -1,7 +1,8 @@
-// services/searchSpotify.ts
 import { createSpotifyClient } from "@/utils/spotify";
+import { searchYouTube } from "@/utils/youtube";
 import { SearchResult } from "@/utils/types/SearchResult";
 
+// Spotify Search Function
 export async function searchSpotify(accessToken: string, query: string): Promise<SearchResult[]> {
   const spotify = createSpotifyClient(accessToken);
 
@@ -12,7 +13,7 @@ export async function searchSpotify(accessToken: string, query: string): Promise
     const albums = body?.albums?.items ?? [];
     const artists = body?.artists?.items ?? [];
 
-    const results: SearchResult[] = [
+    const spotifyResults: SearchResult[] = [
       ...tracks.map((item) => ({
         id: item.id ?? '',
         name: item.name ?? 'Unknown Track',
@@ -33,9 +34,47 @@ export async function searchSpotify(accessToken: string, query: string): Promise
       })),
     ];
 
-    return results.filter(item => item.id && item.name);
+    return spotifyResults.filter(item => item.id && item.name);
   } catch (err) {
     console.error("Spotify API error: searchSpotify", err);
+    return [];
+  }
+}
+
+// YouTube Search Function
+export async function searchYouTubeVideos(query: string): Promise<SearchResult[]> {
+  try {
+    const youtubeResults = await searchYouTube(query);
+
+    const formattedResults: SearchResult[] = youtubeResults.map((video: any) => ({
+      id: video.id,
+      name: video.name ?? 'Unknown Video',
+      type: 'video' as const,
+      image: video.image ?? '',
+    }));
+
+    return formattedResults;
+  } catch (err) {
+    console.error("YouTube API error: searchYouTubeVideos", err);
+    return [];
+  }
+}
+
+// Combined Search Function for Spotify and YouTube
+export async function searchSpotifyAndYouTube(accessToken: string, query: string): Promise<SearchResult[]> {
+  try {
+    // Get Spotify results
+    const spotifyResults = await searchSpotify(accessToken, query);
+
+    // Get YouTube results
+    const youtubeResults = await searchYouTubeVideos(query);
+
+    // Combine results and return
+    const allResults: SearchResult[] = [...spotifyResults, ...youtubeResults];
+
+    return allResults.filter(item => item.id && item.name);
+  } catch (err) {
+    console.error("Error in combined search (Spotify and YouTube):", err);
     return [];
   }
 }

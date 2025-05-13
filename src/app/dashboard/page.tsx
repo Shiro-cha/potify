@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
-import { useSession} from "next-auth/react";
+import { useSession, signOut} from "next-auth/react";
 import { getToken } from "next-auth/jwt"
 import { useRouter } from "next/navigation";
 
@@ -101,6 +101,30 @@ export default function Dashboard() {
   
   }, [searchQuery, session, status]);
 
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      if (!session?.accessToken) return;
+  
+      try {
+        // Ping l'API de Spotify pour voir si le token est encore valide
+        const res = await fetch("https://api.spotify.com/v1/me", {
+          headers: {
+            Authorization: `Bearer ${session.accessToken}`,
+          },
+        });
+  
+        if (res.status === 401 || res.status === 400) {
+          console.warn("Token invalid, signing out...");
+          signOut({ callbackUrl: LOGIN }); // Redirige vers login
+        }
+      } catch (err) {
+        console.error("Token check failed:", err);
+        signOut({ callbackUrl: LOGIN });
+      }
+    }, 5000); // Check every 5 seconds
+  
+    return () => clearInterval(interval); // Clear interval on unmount
+  }, [session?.accessToken]);
   
 
   if (status === "loading") return (
