@@ -1,4 +1,4 @@
-# 🎵 Potify
+# 🎵 Potify :)
 
 **Potify** is a modern web application built with [Next.js](https://nextjs.org/), [React 19](https://react.dev/), and [Tailwind CSS](https://tailwindcss.com/), powered by the [Spotify Web API](https://developer.spotify.com/documentation/web-api/). It allows users to authenticate via Spotify, browse music content, and interact with their playlists.
 
