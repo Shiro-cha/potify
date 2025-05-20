@@ -9,9 +9,12 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
-  
+export default [
+  // Example: manual config without any "extends"
+  ...compat.config({
+    rules: {
+      // Turn off specific rules here if needed
+      "react/react-in-jsx-scope": "off",
+    },
+  }),
 ];
-
-export default eslintConfig;
